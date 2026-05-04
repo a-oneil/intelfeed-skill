@@ -50,7 +50,7 @@ PASSWORD = os.environ.get("INTELFEED_PASSWORD", "")
 TOOLS: dict[str, dict] = {
     # --- Search & Discovery ---
     "search_entries": {
-        "description": 'Full-text search across RSS entries. Supports query language: field filters (title:, content:, author:, feed:, tag:, type:rss/youtube/podcast, date:>YYYY-MM-DD, is:starred/unread/bookmarked/noted), boolean operators (AND, OR, NOT), wildcards (*), exact phrases ("..."), and grouping with parentheses.',
+        "description": 'Full-text search across RSS entries. Supports query language: field filters (title:, content:, author:, feed:, tag:, type:rss/atom/youtube/podcast, date:>YYYY-MM-DD, is:starred/unread/bookmarked/noted, media:audio/video/image/document, lang:), entity filters (cve:, ttp:, actor:, malware:, country:, rule:, pir: with sub-fields like cve.cvss:>9.0), boolean operators (AND, OR, NOT), wildcards (*), exact phrases ("..."), grouping with parentheses, and sort:newest/oldest/relevance.',
         "params": {
             "query": {"type": "str", "required": True},
             "limit": {"type": "int", "default": 20},
@@ -318,7 +318,7 @@ TOOLS: dict[str, dict] = {
             "entity_type": {
                 "type": "str",
                 "required": True,
-                "enum": ["ttp", "cve", "threat_actor", "malware", "country"],
+                "enum": ["ttp", "cve", "threat_actor", "malware", "country", "vendor", "product", "mitigation", "tool"],
             },
             "entity_id": {"type": "str", "required": True},
         },
@@ -329,7 +329,7 @@ TOOLS: dict[str, dict] = {
             "entity_type": {
                 "type": "str",
                 "required": True,
-                "enum": ["ttp", "cve", "threat_actor", "malware", "country"],
+                "enum": ["ttp", "cve", "threat_actor", "malware", "country", "vendor", "product", "mitigation", "tool"],
             },
             "entity_id": {"type": "str", "required": True},
             "depth": {"type": "int", "default": 1},
@@ -341,7 +341,7 @@ TOOLS: dict[str, dict] = {
             "entity_type": {
                 "type": "str",
                 "required": True,
-                "enum": ["ttp", "cve", "threat_actor", "malware", "country"],
+                "enum": ["ttp", "cve", "threat_actor", "malware", "country", "vendor", "product", "mitigation", "tool"],
             },
             "entity_id": {"type": "str", "required": True},
         },
@@ -506,6 +506,41 @@ TOOLS: dict[str, dict] = {
                 "enum": ["rss", "atom", "youtube", "podcast"],
             },
             "category": {"type": "str", "default": None},
+        },
+    },
+    "add_telegram_feed": {
+        "description": (
+            "Subscribe to a Telegram channel feed. Requires server-side Telegram setup. "
+            "Auto-attribution (threat_actor_id / campaign_id) is the killer feature for "
+            "ransomware leak channels and hacktivist channels that ARE the actor."
+        ),
+        "params": {
+            "channel": {"type": "str", "required": True},
+            "title": {"type": "str", "default": None},
+            "include_media": {"type": "bool", "default": True},
+            "extract_forwards": {"type": "bool", "default": True},
+            "max_message_age_days": {"type": "int", "default": 30},
+            "max_messages_per_fetch": {"type": "int", "default": 200},
+            "fetch_interval_minutes": {"type": "int", "default": 30},
+            "threat_actor_id": {"type": "str", "default": None},
+            "campaign_id": {"type": "str", "default": None},
+            "session_name": {"type": "str", "default": None},
+            "category": {"type": "str", "default": None},
+        },
+    },
+    "list_telegram_feeds": {
+        "description": "List Telegram channel feeds with their adapter config.",
+        "params": {"limit": {"type": "int", "default": 50}},
+    },
+    "discover_telegram_channels": {
+        "description": (
+            "List every Telegram channel the IntelFeed bootstrap account is joined to. "
+            "is_subscribed flag shows which ones are already ingested as feeds. Use to find "
+            "channels you joined in Telegram but haven't added to IntelFeed yet."
+        ),
+        "params": {
+            "session_name": {"type": "str", "default": ""},
+            "only_unsubscribed": {"type": "bool", "default": False},
         },
     },
     "create_note": {

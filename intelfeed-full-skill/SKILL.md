@@ -53,12 +53,12 @@ The search tools (`search_entries`, `search_entities`, `search_unified`) support
 - `author:` — Author name
 - `feed:` — Feed name (`feed:"Krebs on Security"`)
 - `tag:` — Tag name (`tag:critical`)
-- `type:` — Feed type: `rss`, `youtube`, `podcast`
+- `type:` — Feed type: `rss`, `atom`, `youtube`, `podcast`
 - `date:` — Date filter with `>`, `<`, `>=`, `<=`, or range (`date:>2026-03-01`, `date:2026-01..2026-03`)
 - `is:` — State: `starred`, `unread`, `read`, `bookmarked`, `noted`
-- `media:` — Media type: `audio`, `video`
+- `media:` — Media type: `audio`, `video`, `image`, `document`
 - `lang:` — Language filter
-- `sort:` — Sort order: `newest`, `oldest`, `relevance`, `title_asc`, `title_desc`
+- `sort:` — Sort order: `newest`, `oldest`, `relevance`
 
 ### Intelligence Filters
 
@@ -68,6 +68,7 @@ The search tools (`search_entries`, `search_entities`, `search_unified`) support
 - `malware:` — Malware family, also `malware.type:`
 - `country:` — Country name, also `country.region:`
 - `rule:` — Detection rule title, also `rule.type:`, `rule.severity:`
+- `pir:` — Priority Intelligence Requirement title, also `pir.priority:`, `pir.category:`
 
 ### Operators
 
@@ -220,7 +221,7 @@ Then synthesize everything into a coherent briefing.
 - **validate_detection_rule** — Validate rule syntax (rule_type, rule_content)
 - **build_detection_summary** — Full detection analysis (entry_ids, rule_formats)
 
-### Write Operations (20 tools)
+### Write Operations (22 tools)
 
 - **create_threat_actor** — Create threat actor (name, aliases, description, country, motivation)
 - **create_malware** — Create malware family (name, aliases, description, malware_type)
