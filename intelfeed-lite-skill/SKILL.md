@@ -1,5 +1,5 @@
 ---
-name: intelfeed-lite
+name: intelfeed
 description: "Read-only access to the running IntelFeed platform via its lite CLI tool. Use this skill whenever the user wants to query, search, look up, browse, or analyze data in their IntelFeed instance — searching entries, looking up threat actors / malware / CVEs / TTPs, viewing campaigns, browsing detection rules, pivoting across intelligence entities, checking detection gaps, or inspecting feeds and analytics. Also trigger when the user asks questions that could be answered by querying IntelFeed, such as 'what's trending', 'show me recent entries about X', 'who is APT29', 'find articles related to this campaign', 'what feeds do I have', or 'what's in my triage queue'. Even if the user doesn't mention IntelFeed explicitly, use this skill when the question is about reading threat intelligence data, feed entries, detection rules, or security entities that live in the platform."
 ---
 
@@ -11,10 +11,10 @@ This skill is for retrieving data from IntelFeed — search, get, list, pivot, a
 
 ## How to Use the CLI
 
-The CLI lives at `.claude/skills/intelfeed-lite/scripts/intelfeed_cli.py` relative to the project root. Zero external dependencies — just Python 3.12+.
+The CLI lives at `.claude/skills/intelfeed/scripts/intelfeed_cli.py` relative to the project root. Zero external dependencies — just Python 3.12+.
 
 ```bash
-python3 .claude/skills/intelfeed-lite/scripts/intelfeed_cli.py <tool_name> '<json_args>'
+python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py <tool_name> '<json_args>'
 ```
 
 It requires three environment variables (already configured):
@@ -29,11 +29,11 @@ The CLI supports multiple tool calls in a single invocation. When you need data 
 
 ```bash
 # BAD: Two separate invocations
-python3 .claude/skills/intelfeed-lite/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
-python3 .claude/skills/intelfeed-lite/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
+python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
+python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
 
 # GOOD: One invocation, both results returned together
-python3 .claude/skills/intelfeed-lite/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
+python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
 ```
 
 Batch when the calls are independent (don't need each other's output). Run sequentially when a later call depends on an earlier result (e.g., you need an entity ID from search before you can pivot).
@@ -41,7 +41,7 @@ Batch when the calls are independent (don't need each other's output). Run seque
 ### Tool with no arguments
 
 ```bash
-python3 .claude/skills/intelfeed-lite/scripts/intelfeed_cli.py get_dashboard_stats
+python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py get_dashboard_stats
 ```
 
 ## Search Query Language
