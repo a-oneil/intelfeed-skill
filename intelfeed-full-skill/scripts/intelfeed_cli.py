@@ -50,10 +50,11 @@ PASSWORD = os.environ.get("INTELFEED_PASSWORD", "")
 TOOLS: dict[str, dict] = {
     # --- Search & Discovery ---
     "search_entries": {
-        "description": 'Full-text search across RSS entries. Supports query language: field filters (title:, content:, author:, feed:, tag:, type:rss/atom/youtube/podcast, date:>YYYY-MM-DD, is:starred/unread/bookmarked/noted, media:audio/video/image/document, lang:), entity filters (cve:, ttp:, actor:, malware:, country:, rule:, pir: with sub-fields like cve.cvss:>9.0), boolean operators (AND, OR, NOT), wildcards (*), exact phrases ("..."), grouping with parentheses, and sort:newest/oldest/relevance.',
+        "description": 'Full-text search across RSS entries. Supports query language: field filters (title:, content:, author:, feed:, tag:, type:rss/atom/youtube/podcast, date:>YYYY-MM-DD, is:starred/unread/bookmarked/noted, media:audio/video/image/document, lang:), entity filters (cve:, ttp:, actor:, malware:, country:, rule:, pir: with sub-fields like cve.cvss:>9.0), boolean operators (AND, OR, NOT), wildcards (*), exact phrases ("..."), grouping with parentheses, and sort:newest/oldest/relevance. Per-call max is 1000; use offset to paginate through larger result sets.',
         "params": {
             "query": {"type": "str", "required": True},
             "limit": {"type": "int", "default": 20},
+            "offset": {"type": "int", "default": 0},
             "sort": {
                 "type": "str",
                 "default": "relevance",
