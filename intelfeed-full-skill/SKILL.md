@@ -9,10 +9,10 @@ You have access to a running IntelFeed instance via a CLI tool. The user is a se
 
 ## How to Use the CLI
 
-The CLI lives at `.claude/skills/intelfeed/scripts/intelfeed_cli.py` relative to the project root. Zero external dependencies — just Python 3.12+.
+The CLI lives at `~/.claude/skills/intelfeed/scripts/intelfeed_cli.py` (the skill is installed under your home directory at `~/.claude/skills/`). Always use the `~/` home-relative path so it resolves regardless of your current working directory — do not use a project-relative `.claude/...` path. Zero external dependencies — just Python 3.12+.
 
 ```bash
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py <tool_name> '<json_args>'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py <tool_name> '<json_args>'
 ```
 
 It requires three environment variables (already configured):
@@ -27,11 +27,11 @@ The CLI supports multiple tool calls in a single invocation. When you need data 
 
 ```bash
 # BAD: Two separate invocations
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
 
 # GOOD: One invocation, both results returned together
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
 ```
 
 Batch when the calls are independent (don't need each other's output). Run sequentially when a later call depends on an earlier result (e.g., you need an entity ID from search before you can pivot).
@@ -39,7 +39,7 @@ Batch when the calls are independent (don't need each other's output). Run seque
 ### Tool with no arguments
 
 ```bash
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py get_dashboard_stats
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py get_dashboard_stats
 ```
 
 ## Search Query Language
@@ -150,7 +150,7 @@ Then synthesize everything into a coherent briefing.
 - **search_unified** — Search both entries and entities simultaneously (query, limit)
 - **get_search_facets** — Get available search facets
 
-### Read Operations (18 tools)
+### Read Operations (17 tools)
 
 - **get_entry** — Fetch entry with full content and intelligence (entry_id)
 - **get_feed_entries** — List recent entries from a feed (feed_id, limit)
@@ -161,7 +161,6 @@ Then synthesize everything into a coherent briefing.
 - **get_campaign** — Get campaign details (campaign_id)
 - **get_feeds** — List configured feeds (limit)
 - **get_detection_rules** — List detection rules (rule_type, limit)
-- **get_boards** — List reading boards (limit)
 - **get_requirements** — Get intelligence requirements (status: active/fulfilled/expired/draft)
 - **get_correlation_events** — Get recent correlation events (limit, unread_only)
 - **get_analytics** — Get analytics (metric: overview/trending/detection_coverage/velocity, entity_type, days)
@@ -221,7 +220,7 @@ Then synthesize everything into a coherent briefing.
 - **validate_detection_rule** — Validate rule syntax (rule_type, rule_content)
 - **build_detection_summary** — Full detection analysis (entry_ids, rule_formats)
 
-### Write Operations (22 tools)
+### Write Operations (21 tools)
 
 - **create_threat_actor** — Create threat actor (name, aliases, description, country, motivation)
 - **create_malware** — Create malware family (name, aliases, description, malware_type)
@@ -231,7 +230,6 @@ Then synthesize everything into a coherent briefing.
 - **create_note** — Add note to entry (entry_id, content)
 - **create_entity_note** — Add note to entity (entity_type, entity_id, content)
 - **add_tag** — Tag an entry (entry_id, tag_name)
-- **add_to_board** — Add entry to board (board_id, entry_id, note)
 - **add_to_campaign** — Link entry/entity to campaign (campaign_id, entry_id or entity_type+entity_id, role)
 - **link_entities** — Create relationship between entities (source_type, source_id, target_type, target_id, relationship_type)
 - **create_automation_rule** — Set up automation (name, trigger_type, actions, description, trigger_config, conditions)

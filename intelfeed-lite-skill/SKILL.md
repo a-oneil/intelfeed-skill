@@ -11,10 +11,10 @@ This skill is for retrieving data from IntelFeed — search, get, list, pivot, a
 
 ## How to Use the CLI
 
-The CLI lives at `.claude/skills/intelfeed/scripts/intelfeed_cli.py` relative to the project root. Zero external dependencies — just Python 3.12+.
+The CLI lives at `~/.claude/skills/intelfeed/scripts/intelfeed_cli.py` (the skill is installed under your home directory at `~/.claude/skills/`). Always use the `~/` home-relative path so it resolves regardless of your current working directory — do not use a project-relative `.claude/...` path. Zero external dependencies — just Python 3.12+.
 
 ```bash
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py <tool_name> '<json_args>'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py <tool_name> '<json_args>'
 ```
 
 It requires three environment variables (already configured):
@@ -29,11 +29,11 @@ The CLI supports multiple tool calls in a single invocation. When you need data 
 
 ```bash
 # BAD: Two separate invocations
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entities '{"query": "APT29"}'
 
 # GOOD: One invocation, both results returned together
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py search_entries '{"query": "APT29"}' search_entities '{"query": "APT29"}'
 ```
 
 Batch when the calls are independent (don't need each other's output). Run sequentially when a later call depends on an earlier result (e.g., you need an entity ID from search before you can pivot).
@@ -41,7 +41,7 @@ Batch when the calls are independent (don't need each other's output). Run seque
 ### Tool with no arguments
 
 ```bash
-python3 .claude/skills/intelfeed/scripts/intelfeed_cli.py get_dashboard_stats
+python3 ~/.claude/skills/intelfeed/scripts/intelfeed_cli.py get_dashboard_stats
 ```
 
 ## Search Query Language
